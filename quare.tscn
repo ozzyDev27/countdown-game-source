@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=3 uid="uid://b2tkfnqhx5xv"]
+
+[ext_resource type="Texture2D" uid="uid://regt4psf4pxw" path="res://quare.png" id="1_1dyuy"]
+[ext_resource type="PhysicsMaterial" uid="uid://c5tm7od8mwjjb" path="res://elastic.tres" id="1_xwtag"]
+[ext_resource type="Script" path="res://quare.gd" id="2_iatrf"]
+[ext_resource type="Gradient" uid="uid://c41berdx2rqpw" path="res://gradient.tres" id="2_xh8jo"]
+[ext_resource type="Script" path="res://LockedRotation.gd" id="3_g8sg8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e1p40"]
+size = Vector2(155, 155)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_uwbqk"]
+gradient = ExtResource("2_xh8jo")
+width = 2048
+
+[node name="Quare" type="StaticBody2D" groups=["destructible"]]
+scale = Vector2(0.5, 0.5)
+physics_material_override = ExtResource("1_xwtag")
+script = ExtResource("2_iatrf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_e1p40")
+script = ExtResource("3_g8sg8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 1
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_1dyuy")
+
+[node name="TextureRect" type="TextureRect" parent="Sprite2D"]
+offset_left = -956.667
+offset_top = -266.667
+offset_right = 1091.33
+offset_bottom = -226.667
+scale = Vector2(1, 14.3333)
+texture = SubResource("GradientTexture1D_uwbqk")

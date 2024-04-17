@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3 uid="uid://cgcjicue76wsr"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_bu0dg"]
+[ext_resource type="Texture2D" uid="uid://cyk2dqt7ipjg1" path="res://Arrow (1).png" id="2_cy2gs"]
+[ext_resource type="Gradient" uid="uid://c41berdx2rqpw" path="res://gradient.tres" id="3_w0118"]
+[ext_resource type="Script" path="res://InfiniteGradient.gd" id="4_hwb8d"]
+[ext_resource type="Script" path="res://PinnedLine.gd" id="5_as86f"]
+[ext_resource type="Script" path="res://PinnedNode.gd" id="7_6wch2"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xdd3j"]
+gradient = ExtResource("3_w0118")
+
+[sub_resource type="Curve" id="Curve_7ru3n"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_l1fxo"]
+offsets = PackedFloat32Array(0.756667, 1)
+colors = PackedColorArray(0.48, 0.48, 1, 1, 0.51, 0.51, 1, 0)
+
+[node name="Player" type="RigidBody2D" groups=["destructible"]]
+position = Vector2(-42, 74)
+gravity_scale = 1.66533e-16
+linear_damp = 1.0
+script = ExtResource("1_bu0dg")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+clip_children = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5708
+scale = Vector2(0.1, 0.1)
+pivot_offset = Vector2(256, 256)
+texture = ExtResource("2_cy2gs")
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -1024.0
+offset_right = 1024.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_xdd3j")
+script = ExtResource("4_hwb8d")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
+rotation = 1.5708
+scale = Vector2(0.1, 0.1)
+polygon = PackedVector2Array(0, -155, 23, -147, 249, 89, 259, 113, 246, 142, 216, 155, 178, 148, 0, 52, -187, 150, -232, 148, -257, 116, -250, 89, -38, -136, -21, -147)
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+visible = false
+target_position = Vector2(5000, 2.08165e-12)
+
+[node name="Line2D" type="Line2D" parent="RayCast2D" node_paths=PackedStringArray("point_a", "point_b")]
+z_index = -2
+points = PackedVector2Array(0, 0, 100, 2.08165e-12)
+width = 100.0
+width_curve = SubResource("Curve_7ru3n")
+gradient = SubResource("Gradient_l1fxo")
+script = ExtResource("5_as86f")
+point_a = NodePath("../..")
+point_b = NodePath("../Marker2D")
+
+[node name="Marker2D" type="Marker2D" parent="RayCast2D"]
+script = ExtResource("7_6wch2")
+
+[node name="Gun" type="Marker2D" parent="."]
+visible = false
+position = Vector2(53, 0)

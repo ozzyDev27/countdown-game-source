@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://c54oi61t8bvtu"]
+
+[ext_resource type="Script" path="res://Entagon.gd" id="1_726g8"]
+[ext_resource type="PhysicsMaterial" uid="uid://c5tm7od8mwjjb" path="res://elastic.tres" id="1_pvpk5"]
+[ext_resource type="Texture2D" uid="uid://3y48ijiv4vlf" path="res://Pentagon.png" id="2_rhkcn"]
+[ext_resource type="Gradient" uid="uid://c41berdx2rqpw" path="res://gradient.tres" id="3_13sdt"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ebpuq"]
+gradient = ExtResource("3_13sdt")
+width = 2048
+
+[node name="Entagon" type="RigidBody2D"]
+physics_material_override = ExtResource("1_pvpk5")
+gravity_scale = 1.66533e-16
+max_contacts_reported = 2
+contact_monitor = true
+linear_damp = 0.1
+angular_velocity = 0.174533
+script = ExtResource("1_726g8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 1
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_rhkcn")
+
+[node name="TextureRect" type="TextureRect" parent="Sprite2D"]
+offset_left = -1324.0
+offset_top = -301.0
+offset_right = 724.0
+offset_bottom = 242.0
+texture = SubResource("GradientTexture1D_ebpuq")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(0.1, 0.1)
+polygon = PackedVector2Array(0, -227, 236, -55, 143, 221, -144, 219, -230, -51)
+
+[connection signal="body_entered" from="." to="." method="hit"]

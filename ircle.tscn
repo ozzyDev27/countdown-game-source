@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://4lc6bvf7b8a0"]
+
+[ext_resource type="Script" path="res://laser_enemy.gd" id="2_lyi2i"]
+[ext_resource type="Script" path="res://Laser.gd" id="3_hosl5"]
+[ext_resource type="Texture2D" uid="uid://cso5ufbf7u7oj" path="res://Circle.png" id="4_kq1iu"]
+[ext_resource type="Gradient" uid="uid://c41berdx2rqpw" path="res://gradient.tres" id="5_4gq2q"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cis1o"]
+gradient = ExtResource("5_4gq2q")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yns8h"]
+radius = 128.0
+
+[node name="Ircle" type="StaticBody2D" groups=["destructible"]]
+scale = Vector2(0.2, 0.2)
+script = ExtResource("2_lyi2i")
+
+[node name="Line2D" type="Line2D" parent="."]
+z_index = -2
+points = PackedVector2Array(0, 0, 5000, 2.08165e-12)
+width = 100.0
+default_color = Color(0.886275, 0.254902, 0.254902, 1)
+end_cap_mode = 2
+script = ExtResource("3_hosl5")
+
+[node name="VisibleTimer" type="Timer" parent="Line2D"]
+wait_time = 0.2
+
+[node name="RayCast2D" type="RayCast2D" parent="Line2D"]
+target_position = Vector2(50000, 2.08165e-12)
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_kq1iu")
+
+[node name="TextureRect" type="TextureRect" parent="Sprite2D"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1700.0
+offset_top = -370.0
+offset_right = -1700.0
+offset_bottom = -370.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(5, 2)
+texture = SubResource("GradientTexture1D_cis1o")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yns8h")
+
+[connection signal="timeout" from="Line2D/VisibleTimer" to="Line2D" method="hide_self"]
+[connection signal="timeout" from="Timer" to="." method="fire_laser"]

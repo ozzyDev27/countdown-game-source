@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://yu50iyftoyaj"]
+
+[ext_resource type="Texture2D" uid="uid://cartrcqnympin" path="res://Triangle.png" id="1_pjdof"]
+[ext_resource type="Gradient" uid="uid://c41berdx2rqpw" path="res://gradient.tres" id="2_ic6q0"]
+[ext_resource type="Script" path="res://Gun.gd" id="3_kffl0"]
+[ext_resource type="PackedScene" uid="uid://c6ybtahxwpukd" path="res://bullet.tscn" id="4_tfncc"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_u5oju"]
+gradient = ExtResource("2_ic6q0")
+width = 2048
+
+[node name="Riangle" type="StaticBody2D" groups=["destructible"]]
+scale = Vector2(0.25, 0.25)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 1
+rotation = 1.5708
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_pjdof")
+
+[node name="TextureRect" type="TextureRect" parent="Sprite2D"]
+offset_left = -220.0
+offset_top = 265.0
+offset_right = 1828.0
+offset_bottom = 777.0
+rotation = -1.5708
+texture = SubResource("GradientTexture1D_u5oju")
+
+[node name="Gun2" type="Marker2D" parent="."]
+position = Vector2(-224, 284)
+rotation = 2.0944
+script = ExtResource("3_kffl0")
+bullet = ExtResource("4_tfncc")
+
+[node name="Gun3" type="Marker2D" parent="."]
+position = Vector2(-224, -284)
+rotation = 4.18879
+script = ExtResource("3_kffl0")
+bullet = ExtResource("4_tfncc")
+
+[node name="Gun" type="Marker2D" parent="."]
+position = Vector2(272, 0)
+script = ExtResource("3_kffl0")
+bullet = ExtResource("4_tfncc")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(-8, 0)
+polygon = PackedVector2Array(-80, -104, 100, 0, -80, 104)
+
+[connection signal="timeout" from="Timer" to="." method="queue_free"]
+[connection signal="timeout" from="Timer" to="Gun2" method="shoot"]
+[connection signal="timeout" from="Timer" to="Gun3" method="shoot"]
+[connection signal="timeout" from="Timer" to="Gun" method="shoot"]

@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://c87easb8570vd"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://c5tm7od8mwjjb" path="res://elastic.tres" id="1_1oplx"]
+[ext_resource type="Script" path="res://Shield.gd" id="2_q7qjq"]
+[ext_resource type="Texture2D" uid="uid://xq1dd6w22i6f" path="res://Hexagon outline.png" id="2_x53yb"]
+[ext_resource type="Texture2D" uid="uid://baaak3ooc6rvq" path="res://Hexagon.png" id="3_tj1rx"]
+[ext_resource type="Gradient" uid="uid://c41berdx2rqpw" path="res://gradient.tres" id="4_14wdv"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d2ef1"]
+gradient = ExtResource("4_14wdv")
+width = 4096
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_evq3y"]
+radius = 25.0
+
+[node name="Exagon" type="Node2D"]
+
+[node name="Shield" type="StaticBody2D" parent="." groups=["destructible"]]
+collision_layer = 2
+collision_mask = 2
+physics_material_override = ExtResource("1_1oplx")
+script = ExtResource("2_q7qjq")
+
+[node name="Sprite" type="Sprite2D" parent="Shield"]
+self_modulate = Color(0.529412, 0.819608, 1, 0.27451)
+texture = ExtResource("2_x53yb")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Shield"]
+position = Vector2(13, 194)
+polygon = PackedVector2Array(-13, -443, 204, -317, 206, -69, -12, 57, -231, -71, -231, -316)
+
+[node name="Generator" type="StaticBody2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Generator"]
+clip_children = 1
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_tj1rx")
+
+[node name="TextureRect" type="TextureRect" parent="Generator/Sprite"]
+offset_left = -2110.0
+offset_top = -490.0
+offset_right = 1986.0
+offset_bottom = 534.0
+texture = SubResource("GradientTexture1D_d2ef1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Generator"]
+shape = SubResource("CircleShape2D_evq3y")

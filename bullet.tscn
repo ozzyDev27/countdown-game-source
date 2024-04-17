@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://c6ybtahxwpukd"]
+
+[ext_resource type="Script" path="res://bullet.gd" id="1_3q13i"]
+[ext_resource type="Texture2D" uid="uid://cso5ufbf7u7oj" path="res://Circle.png" id="1_if042"]
+[ext_resource type="Gradient" uid="uid://c41berdx2rqpw" path="res://gradient.tres" id="2_cbxu4"]
+[ext_resource type="Texture2D" uid="uid://djfjdlri5xdkn" path="res://dotted line.png" id="4_h1jno"]
+[ext_resource type="Script" path="res://TrajectoryDisplay.gd" id="5_0jcwc"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xnhwp"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b5cca"]
+radius = 13.0
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tltp1"]
+gradient = ExtResource("2_cbxu4")
+width = 1024
+
+[node name="Bullet" type="RigidBody2D"]
+collision_layer = 2
+physics_material_override = SubResource("PhysicsMaterial_xnhwp")
+gravity_scale = 1.66533e-16
+max_contacts_reported = 1
+contact_monitor = true
+linear_velocity = Vector2(2.08165e-12, 2.08165e-12)
+script = ExtResource("1_3q13i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CircleShape2D_b5cca")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 1
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_if042")
+
+[node name="TextureRect" type="TextureRect" parent="Sprite2D"]
+offset_left = -280.0
+offset_top = -280.0
+offset_right = 744.0
+offset_bottom = -240.0
+scale = Vector2(1, 13.8)
+texture = SubResource("GradientTexture1D_tltp1")
+
+[node name="TrajectoryDisplay" type="Line2D" parent="."]
+z_index = -1
+texture_repeat = 2
+position = Vector2(-2, 0)
+points = PackedVector2Array(0, 0, 2000, 2.08165e-12)
+width = 50.0
+default_color = Color(0.909804, 0.717647, 0.337255, 0.529412)
+texture = ExtResource("4_h1jno")
+texture_mode = 1
+script = ExtResource("5_0jcwc")
+
+[node name="RayCast2D" type="RayCast2D" parent="TrajectoryDisplay"]
+target_position = Vector2(5000, 2.08165e-12)
+collision_mask = 3
+
+[connection signal="body_entered" from="." to="." method="hit"]
